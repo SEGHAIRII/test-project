@@ -150,6 +150,7 @@ for year in sorted(os.listdir(base_dir), reverse=True):
 
                 for page_num, page in enumerate(data):
                     # Condition to find layout with large width and height
+                    # to modify this condition
                     layout_peek = [i for i, layout in enumerate(page['page']) 
                                    if ((layout['label'] == 'Text') and
                                         ((layout['bbox_layout'][2] - layout['bbox_layout'][0]) > 900) and 
