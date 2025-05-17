@@ -177,7 +177,6 @@ def detect_two_columns(layout: dict) -> bool:
     return True # All checks passed
 
 
-# --- Original functions (slightly modified or kept for context if needed) ---
 def in_same_level(text_box_1:list[int], text_box_2: list[int], margin:int)->bool:
     # This function is not directly used by the new two-column detection logic,
     # but kept here as it was part of the original problem statement.
@@ -203,9 +202,6 @@ def in_same_level(text_box_1:list[int], text_box_2: list[int], margin:int)->bool
      
 
 def find_min_width(layout, height_margin:int, start_min_width=900)->int:
-    # This function's original purpose was to find a minimum width *between columns*.
-    # The new `detect_two_columns` function supersedes this for identifying column structure.
-    # It might still be useful for other analyses, so it's kept.
     min_width_found = start_min_width
     if 'bbox_text' not in layout or len(layout['bbox_text']) < 2:
         return start_min_width # Return default if not enough boxes
@@ -341,9 +337,10 @@ def visualize_page_layouts(page_data, figsize=(20, 25)):
     plt.tight_layout()
     return fig
 
-# --- Main processing loop ---
+# Path to the directory containing yearly result_json folders
 base_dir = "result_json" # Assumes this directory exists and is populated
 
+# because of a problem with wsl i needed to save the images and not show them
 # Create a directory for output images if it doesn't exist
 output_viz_dir = "visualizations"
 os.makedirs(output_viz_dir, exist_ok=True)
@@ -374,13 +371,12 @@ for year in sorted(os.listdir(base_dir), reverse=True):
                         layout_item['_is_two_column_debug'] = False
 
 
-                    # New condition for layout_peek
-                    # We are interested in any text layout that is detected as two-column
+                    #==================== the modified condition
                     two_column_layout_indices = []
                     for i, layout_item in enumerate(page_data['page']):
                         if layout_item.get('label') == 'Text' and detect_two_columns(layout_item):
                             two_column_layout_indices.append(i)
-                            layout_item['_is_two_column_debug'] = True # Mark for viz
+                            layout_item['_is_two_column_debug'] = True # modifier color bah n3rf ida rah ydetecter fel 2 columns
                     
                     if two_column_layout_indices:
                         print(f"  File: {filename}, Page: {page_data['index']}, Found two-column structure in layouts: {two_column_layout_indices}")
